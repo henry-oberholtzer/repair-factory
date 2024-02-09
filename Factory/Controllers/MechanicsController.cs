@@ -1,92 +1,84 @@
-// using Microsoft.AspNetCore.Mvc;
-// using Factory.Models;
+using Microsoft.AspNetCore.Mvc;
+using Factory.Models;
+using Microsoft.EntityFrameworkCore;
 
-// namespace Factory.Controllers;
+namespace Factory.Controllers;
 
-//   public class StylistsController : Controller
-//   {
-//     private readonly FactoryContext _db;
+  public class MechanicsController : Controller
+  {
+    private readonly FactoryContext _db;
 
-//     public StylistsController(FactoryContext db)
-//     {
-//       _db = db;
-//     }
+    public MechanicsController(FactoryContext db)
+    {
+      _db = db;
+    }
+    public static Dictionary<string, object> MechanicFormModel(Mechanic mechanic, string action) {
+      return new Dictionary<string, object> {
+        {"Mechanic", mechanic},
+        {"Action", action}
+      };
+    }
+    public async Task<IActionResult> Index()
+    {
+      List<Mechanic> mechanics = await _db.Mechanics.Include(m => m.VehicleMechanics).ToListAsync();
+      return View(mechanics);
+    }
 
-//     public ActionResult Index()
-//     {
-//       List<Stylist> Stylists = _db.GetStylistList();
-//       ViewBag.PageTitle = $"All Stylists";
-//       return View(Stylists);
-//     }
+    public ActionResult Create()
+    {
+      return View(MechanicFormModel(new Mechanic(), "Create"));
+    }
 
-//     public ActionResult Create()
-//     {
-//       ViewBag.PageTitle = $"Add New Stylist";
-//       Dictionary<string, object> model = new() {
-//             {"Stylist", new Stylist()},
-//             {"Usage", "create"},
-//         };
-//       return View(model);
-//     }
+    [HttpPost]
+    public async Task<IActionResult> Create(Mechanic mechanic)
+    {
+      if (ModelState.IsValid)
+      {
+        mechanic.DateAdded = DateTime.Now;
+        _db.Mechanics.Add(mechanic);
+        await _db.SaveChangesAsync();
+        return RedirectToAction("Index");
+      }
+      return View(MechanicFormModel(mechanic, "Create"));
+    }
 
-//     [HttpPost]
-//     public ActionResult Create(Stylist stylist)
-//     {
-//       if (ModelState.IsValid)
-//       {
-//         stylist.DateAdded = DateTime.Now;
-//         _db.Stylists.Add(stylist);
-//         _db.SaveChanges();
-//         return RedirectToAction("Index");
-//       }
-//       ViewBag.PageTitle = $"Add New Stylist";
-//       Dictionary<string, object> model = new() {
-//             {"Stylist", stylist},
-//             {"Usage", "create"},
-//         };
-//       return View(model);
-//     }
+    public async Task<IActionResult> Details(int id)
+    {
+      Mechanic mechanic = await _db
+      .Mechanics
+      .Include(m => m.VehicleMechanics)
+      .ThenInclude(join => join.Vehicle)
+      .FirstOrDefaultAsync(m => m.MechanicId == id);
+      return View(mechanic);
+    }
 
-//     public ActionResult Details(int id)
-//     {
-//       Stylist targetStylist = _db.GetStylist(id);
-//       ViewBag.PageTitle = $"{targetStylist.Name}";
-//       return View(targetStylist);
-//     }
+    public async Task<IActionResult> Edit(int id)
+    {
+      Mechanic thisMechanic = await _db
+      .Mechanics
+      .FirstOrDefaultAsync(m => m.MechanicId == id);
+      return View(MechanicFormModel(thisMechanic, "Edit"));
+    }
+    [HttpPost]
+    public async Task<IActionResult> Edit(Mechanic mechanic)
+    {
+      if (ModelState.IsValid) 
+      {
+      _db.Mechanics.Update(mechanic);
+      await _db.SaveChangesAsync();
+      return RedirectToAction("Index");
+      }
+      return View(MechanicFormModel(mechanic, "Edit"));
+    }
 
-//     public ActionResult Edit(int id)
-//     {
-//       Stylist thisStylist = _db.GetStylist(id);
-//       ViewBag.PageTitle = $"Editing {thisStylist.Name}";
-//       Dictionary<string, object> model = new() {
-//             {"Stylist", thisStylist},
-//             {"Usage", "edit"},
-//         };
-//       return View(model);
-//     }
-//     [HttpPost]
-//     public ActionResult Edit(Stylist stylist)
-//     {
-//       if (ModelState.IsValid) 
-//       {
-//       _db.Stylists.Update(stylist);
-//       _db.SaveChanges();
-//       return RedirectToAction("Index");
-//       }
-//       ViewBag.PageTitle = $"Editing {stylist.Name}";
-//       Dictionary<string, object> model = new() {
-//             {"Stylist", stylist},
-//             {"Usage", "edit"},
-//         };
-//       return View(model);
-//     }
-
-//     [HttpPost]
-//     public ActionResult Delete(int id)
-//     {
-//       Stylist targetStylist = _db.GetStylist(id);
-//       _db.Stylists.Remove(targetStylist);
-//       _db.SaveChanges();
-//       return RedirectToAction("Index");
-//     }
-//   }
+    [HttpPost]
+    public async Task<IActionResult> Delete(int id)
+    {
+      Mechanic thisMechanic = await _db
+      .Mechanics
+      .FirstOrDefaultAsync(m => m.MechanicId == id);
+      _db.Mechanics.Remove(thisMechanic);
+      await _db.SaveChangesAsync();
+      return RedirectToAction("Index");
+    }
+  }

@@ -3,14 +3,14 @@
   string action = Model["Action"];
   string buttonText = "Add";
   string dateAdded = DateTime.Now.ToString("dd-MM-yyyy");
-  if (Model["Usage"] == "Edit")
+  if (Model["Action"] == "Edit")
   {
     buttonText = "Save";
     dateAdded = mechanic.DateAdded.ToString("dd-MM-yyyy");
   }
 }
 
-<form asp-controller="Stylists" asp-action=@action method="post">
+<form asp-controller="Mechanics" asp-action=@action method="post">
   @if(action == "Edit")
   {
     <input asp-for="@mechanic.MechanicId" type="hidden" />

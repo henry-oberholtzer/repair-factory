@@ -10,6 +10,7 @@
 {
   <li class="list-item"><a asp-controller="Mechanics" asp-action="Details" asp-route-id=@mechanic.MechanicId>
     @mechanic.LastName, @mechanic.FirstName</a>
+    <p>Vehicles Assigned: @mechanic.VehicleMechanics.Count</p>
   </li>
 }
 </ol>

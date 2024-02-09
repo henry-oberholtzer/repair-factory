@@ -1,4 +1,4 @@
-# AutoFactory
+# RepairFactory
 
 A web application for tracking mechanics and the vehicles they're able to repair, built with C# and Razor Pages, using EFCore & MVC structure and a MySQL database.
 
@@ -16,19 +16,19 @@ By Henry Oberholtzer
     - Splash page containing a list of all vehicles and all engineers
     - (Optional) Preloaded data
 - Vehicles
-    - Able to see a list of all vehicles that could need to be repaired.
-    - Able to add, edit and delete vehicles
-    - A machine can hold multiple licensed engineers
-    - Unable to add a new machine if the form data is invalid
-    - Able to add new vehicles if no engineers are available
-    - Able to select a machine, see the details about the machine and all engineers licensed to repair the machine.
+    * Able to see a list of all vehicles that could need to be repaired.
+    * Able to add, edit and delete vehicles
+    - A vehicle can hold multiple licensed engineers
+    * Unable to add a new machine if the form data is invalid
+    * Able to add new vehicles if no engineers are available
+    - Able to select a vehicle, see the details about the vehicle and all engineers licensed to repair the machine.
     - (Optional) Add a selectable state for the condition the vehicle is in
     - (Optional) Add a field for the estimated repair time of the vehicle
 - Mechanics
-    - Able to see a list of all engineers available
-    - Able to add, edit and delete engineers
+    * Able to see a list of all engineers available
+    * Able to add, edit and delete engineers
     - An engineer can be licensed to repair multiple vehicles
-    - Unable to add an engineer is the form data is invalid
+    * Unable to add an engineer if the form data is invalid
     - Able to select an engineer, see their details and the vehicles they've been licensed for
     - (Optional) Add a selectable state for whether the engineer is actively engaged in repairs
 - (Optional) Locations
@@ -38,7 +38,8 @@ By Henry Oberholtzer
 - Lots!
 
 ## Upcoming Changes
-- Add form model
+- Add ViewModel
+- Add pagination
 
 ## Setup/Installation Requirements
 
@@ -62,7 +63,7 @@ By Henry Oberholtzer
 
 ## Known Bugs
 
-- None at this time
+- Dates will get weird when editing a submission, I think a view model will be a solution
 
 ## License
 

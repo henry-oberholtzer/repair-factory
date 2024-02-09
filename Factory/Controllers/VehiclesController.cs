@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Factory.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -82,4 +83,23 @@ public class VehiclesController : Controller
         await _db.SaveChangesAsync();
         return RedirectToAction("Index");
     }
+
+    public async Task<IActionResult> AddMechanic(int vehicleId)
+    {
+        SelectList mechanicsSelectList = new(_db.Mechanics, "MechanicId", "LastName");
+        Vehicle vehicle = await _db.Vehicles
+        .Include(v => v.VehicleMechanics)
+        .ThenInclude(join => join.Mechanic)
+        .FirstOrDefaultAsync(v => v.VehicleId == vehicleId);
+        Dictionary<string, object> model = new() {
+            {"selectList", mechanicsSelectList},
+            {"vehicle", vehicle}
+        };
+        return View("_AssignedMechanics", model);
+    }
+    // [HttpPost]
+    // public async Task<IActionResult> AddMechanic(int mechanicId) {
+
+    //     return RedirectToAction("Details", "Vehicle", new { id = vehicle.VehicleId });
+    // };
 }
