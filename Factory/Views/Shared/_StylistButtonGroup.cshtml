@@ -1,0 +1,8 @@
+@model Stylist
+<div class="StylistButtonGroup">
+<a asp-controller="Clients" asp-action="Create" asp-route-id=@Model.StylistId class="button">Add a client</a>
+<a asp-controller="Stylists" asp-action="Edit" asp-route-id=@Model.StylistId class="button">Edit</a>
+<form asp-controller="Stylists" asp-action="Delete" asp-route-id=@Model.StylistId method="post">
+  <button type="submit" class="button">Delete</button>
+</form>
+</div>

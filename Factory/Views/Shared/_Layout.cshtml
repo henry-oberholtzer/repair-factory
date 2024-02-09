@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>@ViewBag.PageTitle - digital-hair-salon</title>
+  <link href="Factory.styles.css" rel="stylesheet" />
+  <link href="~/css/styles.css" rel="stylesheet" runat="server" asp-append-version="true"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Goldman&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  @await Html.PartialAsync("_Header")
+  <div id="main-container">
+    @RenderBody()
+  </div>
+
+  <script src="~/lib/jquery/dist/jquery.min.js"></script>
+  <script src="~/js/scripts.js"></script>
+  @await RenderSectionAsync("_ValidationScriptsPartial", required: false)
+</body>
+
+</html>

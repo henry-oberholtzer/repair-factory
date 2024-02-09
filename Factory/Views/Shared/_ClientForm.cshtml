@@ -1,0 +1,30 @@
+@{
+  Client client = Model["Client"];
+  SelectList stylistList = Model["SelectList"];
+  string action = "Create";
+  string buttonText = "Add";
+  string dateAdded = DateTime.Now.ToString("dd-MM-yyyy");
+  if (Model["Usage"] == "edit")
+  {
+    action ="Edit";
+    buttonText = "Save";
+    dateAdded = client.DateAdded.ToString("dd-MM-yyyy");
+  }
+}
+
+<form asp-controller="Clients" asp-action=@action method="post">
+  @if(action == "Edit")
+  {
+    <input asp-for="@client.ClientId" type="hidden" />
+  }
+  <label asp-for="@client.Name"></label><br />
+  <input asp-for="@client.Name" type="text" placeholder="Name" /><br />
+  <span asp-validation-for="@client.Name"></span><br />
+  <label asp-for="@client.Notes"></label><br />
+  <textarea asp-for="@client.Notes" placeholder="About"></textarea><br />
+  <span asp-validation-for="@client.Notes"></span><br />
+  <label asp-for="@client.StylistId"></label><br />
+  <select asp-for="@client.StylistId" asp-items=@stylistList></select>
+  <input asp-for="@client.DateAdded" type="hidden" value=@dateAdded />
+  <button class="button" type="submit">@buttonText</button>
+</form>

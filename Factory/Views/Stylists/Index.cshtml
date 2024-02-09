@@ -1,0 +1,14 @@
+@model List<Stylist>
+@{
+  Layout = "_Layout";
+}
+
+<h1>All Stylists</h1>
+@await Html.PartialAsync("_SearchAndFunctionBar", new Dictionary<string, string>(){
+  {"controller", "Stylists"},
+  {"action", "Filter"},
+  {"method", "post"},
+  {"query", "query"}
+})
+<hr/>
+@await Html.PartialAsync("_StylistList", Model)
