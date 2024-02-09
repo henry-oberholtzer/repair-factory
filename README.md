@@ -38,7 +38,7 @@ By Henry Oberholtzer
 - Lots!
 
 ## Upcoming Changes
-- To be decided!
+- Add form model
 
 ## Setup/Installation Requirements
 

@@ -1,0 +1,41 @@
+@{
+  Vehicle vehicle = Model["Vehicle"];
+  string action = "Create";
+  string buttonText = "Add";
+  string dateAdded = DateTime.Now.ToString("dd-MM-yyyy");
+  if (Model["Action"] == "Edit")
+  {
+    action = "Edit";
+    buttonText = "Save";
+    dateAdded = vehicle.DateAdded.ToString("dd-MM-yyyy");
+  }
+}
+
+<form asp-controller="Vehicles" asp-action=@action method="post" class="form">
+  @if (action == "Edit")
+  {
+    <input asp-for="@vehicle.VehicleId" type="hidden" />
+  }
+  <div class="form-group">
+    <label asp-for="@vehicle.ModelYear"></label><br />
+    <input asp-for="@vehicle.ModelYear" type="number" placeholder="Model Year" /><br />
+    <span asp-validation-for="@vehicle.ModelYear"></span><br />
+  </div>
+  <div class="form-group">
+    <label asp-for="@vehicle.Make"></label><br />
+    <input asp-for="@vehicle.Make" type="text" placeholder="Make" /><br />
+    <span asp-validation-for="@vehicle.Make"></span><br />
+  </div>
+  <div class="form-group">
+    <label asp-for="@vehicle.Model"></label><br />
+    <input asp-for="@vehicle.Model" type="text" placeholder="Model" /><br />
+    <span asp-validation-for="@vehicle.Model"></span><br />
+  </div>
+  <div class="form-group">
+    <label asp-for="@vehicle.Condition"></label><br />
+    <textarea asp-for="@vehicle.Condition" placeholder="Condition"></textarea><br />
+    <span asp-validation-for="@vehicle.Condition"></span><br />
+  </div>
+  <input asp-for="@vehicle.DateAdded" type="hidden" value=@dateAdded />
+  <button class="button" type="submit">@buttonText</button>
+</form>

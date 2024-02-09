@@ -16,15 +16,12 @@ public class Vehicle
 
     [Range(1800, 3000)]
     [Required]
+    [Display(Name = "Model Year")]
     public int ModelYear { get; set; }
 
     [StringLength(255, ErrorMessage = "The {0} cannot be longer than {1} characters")]
     [Required]
     public string Condition { get; set; }
-
-    public bool RepairsStarted { get; set; }
-
-    public bool RepairsCompleted { get; set; }
 
     public DateTime DateAdded { get; set; }
 

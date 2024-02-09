@@ -1,0 +1,10 @@
+@model Vehicle
+
+<h1>@Model.ModelYear @Model.Make @Model.Model</h1>
+<h5>Added @Model.DateAdded.ToString("D")</h5>
+<p>@Model.Condition</p>
+<a asp-controller="Vehicle" asp-action="Edit" asp-route-id=@Model.VehicleId><button>Edit</button></a>
+<form asp-controller="Vehicle" asp-action="Delete" asp-route-id=@Model.VehicleId method="post">
+  <button type="submit">Delete</button>
+</form>
+<hr />
