@@ -1,10 +1,17 @@
-@model Vehicle
+@{
+  Vehicle v = Model["vehicle"];
+  SelectList list = Model["selectList"];
+  int count = list.Count();
+}
 
-<h1>@Model.ModelYear @Model.Make @Model.Model</h1>
-<h5>Added @Model.DateAdded.ToString("D")</h5>
-<p>@Model.Condition</p>
-<a asp-controller="Vehicles" asp-action="Edit" asp-route-id=@Model.VehicleId><button>Edit</button></a>
-<form asp-controller="Vehicles" asp-action="Delete" asp-route-id=@Model.VehicleId method="post">
+<h1>@v.ModelYear @v.Make @v.Model</h1>
+<h5>Added @v.DateAdded.ToString("D")</h5>
+<p>@v.Condition</p>
+<a asp-controller="Vehicles" asp-action="Edit" asp-route-id=@v.VehicleId><button>Edit</button></a>
+<form asp-controller="Vehicles" asp-action="Delete" asp-route-id=@v.VehicleId method="post">
   <button type="submit">Delete</button>
 </form>
 <hr />
+@await Html.PartialAsync("_AddMechanic")
+<hr />
+@await Html.PartialAsync("_RemoveMechanic", v)

@@ -67,12 +67,21 @@ public class VehiclesController : Controller
 
     public async Task<IActionResult> Details(int id)
     {
-        Vehicle thisVehicle = await _db
+        List<Mechanic> unselected = await _db.Mechanics
+        .Include(m => m.VehicleMechanics)
+        .Where(m => m.VehicleMechanics.Any(vm => vm.VehicleId != id) || !m.VehicleMechanics.Any()).ToListAsync();
+        SelectList mechanicsSelectList = new(unselected, "MechanicId", "LastName");
+        Vehicle vehicle = await _db
         .Vehicles
         .Include(v => v.VehicleMechanics)
         .ThenInclude(join => join.Mechanic)
         .FirstOrDefaultAsync(v => v.VehicleId == id);
-        return View(thisVehicle);
+        Dictionary<string, object> model = new() {
+            {"selectList", mechanicsSelectList},
+            {"joinEntity", new VehicleMechanic()},
+            {"vehicle", vehicle}
+        };
+        return View(model);
     }
 
     [HttpPost]
@@ -84,22 +93,29 @@ public class VehiclesController : Controller
         return RedirectToAction("Index");
     }
 
-    public async Task<IActionResult> AddMechanic(int vehicleId)
+    [HttpPost]
+    public async Task<IActionResult> AddMechanic(VehicleMechanic vm)
     {
-        SelectList mechanicsSelectList = new(_db.Mechanics, "MechanicId", "LastName");
-        Vehicle vehicle = await _db.Vehicles
-        .Include(v => v.VehicleMechanics)
-        .ThenInclude(join => join.Mechanic)
-        .FirstOrDefaultAsync(v => v.VehicleId == vehicleId);
-        Dictionary<string, object> model = new() {
-            {"selectList", mechanicsSelectList},
-            {"vehicle", vehicle}
-        };
-        return View("_AssignedMechanics", model);
+#nullable enable
+        VehicleMechanic? joinEntity = await _db.VehicleMechanics
+        .FirstOrDefaultAsync(join => join.VehicleId == vm.VehicleId && join.MechanicId == vm.MechanicId);
+#nullable disable
+        if (joinEntity == null && vm.VehicleId != 0)
+        {
+            _db.VehicleMechanics.Add(vm);
+            await _db.SaveChangesAsync();
+            return RedirectToAction("Details", new { id = vm.VehicleId });
+        }
+        return RedirectToAction("Details", new { id = vm.VehicleId });
     }
-    // [HttpPost]
-    // public async Task<IActionResult> AddMechanic(int mechanicId) {
 
-    //     return RedirectToAction("Details", "Vehicle", new { id = vehicle.VehicleId });
-    // };
+    [HttpPost]
+    public async Task<IActionResult> RemoveMechanic(int id)
+    {
+        VehicleMechanic joinEntity = await _db.VehicleMechanics.FirstOrDefaultAsync(vm => vm.VehicleMechanicId == id);
+        int vehicleId = joinEntity.VehicleId;
+        _db.VehicleMechanics.Remove(joinEntity);
+        await _db.SaveChangesAsync();
+        return RedirectToAction("Details", new { id = vehicleId });
+    }
 }
