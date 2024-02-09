@@ -13,7 +13,7 @@ By Henry Oberholtzer
 
 ## User Stories
 - Home
-    - Splash page containing a list of all vehicles and all engineers
+    * Splash page containing a list of all vehicles and all engineers
     - (Optional) Preloaded data
 - Vehicles
     * Able to see a list of all vehicles that could need to be repaired.
