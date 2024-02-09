@@ -18,18 +18,18 @@ By Henry Oberholtzer
 - Vehicles
     * Able to see a list of all vehicles that could need to be repaired.
     * Able to add, edit and delete vehicles
-    - A vehicle can hold multiple licensed engineers
-    * Unable to add a new machine if the form data is invalid
+    * A vehicle can hold multiple licensed engineers
+    * Unable to add a new vehicle if the form data is invalid
     * Able to add new vehicles if no engineers are available
-    - Able to select a vehicle, see the details about the vehicle and all engineers licensed to repair the machine.
+    * Able to select a vehicle, see the details about the vehicle and all engineers assigned to repair the vehicle.
     - (Optional) Add a selectable state for the condition the vehicle is in
     - (Optional) Add a field for the estimated repair time of the vehicle
 - Mechanics
     * Able to see a list of all engineers available
     * Able to add, edit and delete engineers
-    - An engineer can be licensed to repair multiple vehicles
+    * A mechanic can be assigned to repair multiple vehicles
     * Unable to add an engineer if the form data is invalid
-    - Able to select an engineer, see their details and the vehicles they've been licensed for
+    * Able to select a mechanic, see their details and the vehicles they've been licensed for
     - (Optional) Add a selectable state for whether the engineer is actively engaged in repairs
 - (Optional) Locations
     - Add a table to see locations for vehicles
@@ -64,6 +64,8 @@ By Henry Oberholtzer
 ## Known Bugs
 
 - Dates will get weird when editing a submission, I think a view model will be a solution
+- Can't display full names in the select lists for cars or mechanics yet, again I think a view model may solve this
+- Select for assigning in Mechanics isn't filtering down, unsure why this is differnet from the vehicle one.
 
 ## License
 

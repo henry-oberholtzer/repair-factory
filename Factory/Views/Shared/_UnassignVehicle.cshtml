@@ -1,0 +1,18 @@
+@model Mechanic
+
+<ol class="list-group">
+@if (Model.VehicleMechanics.Count == 0) {
+  <li class="list-item">No vehicles assigned.</li>
+}
+@foreach (VehicleMechanic vm in Model.VehicleMechanics)
+{
+  Vehicle v = vm.Vehicle;
+  <li class="list-item">
+  <a asp-controller="Vehicles" asp-action="Details" asp-route-id=@v.VehicleId>@v.ModelYear @v.Make @v.Model</a>
+  <form asp-controller="Mechanics" asp-action="UnassignVehicle" method="post">
+    <input type="hidden" name="id" value=@vm.VehicleMechanicId />
+    <button type="submit">Unassign</button>
+  </form>
+  </li>
+}
+</old class="list-group">

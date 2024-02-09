@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Factory.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -44,12 +45,23 @@ namespace Factory.Controllers;
 
     public async Task<IActionResult> Details(int id)
     {
+      List<Vehicle> unselected = await _db.Vehicles
+      .Include(v => v.VehicleMechanics)
+      .Where(v => v.VehicleMechanics.Any(vm => vm.MechanicId != id) || v.VehicleMechanics.Any())
+      .ToListAsync();
+      SelectList vehiclesSelectList = new(unselected, "VehicleId", "Model");
+
       Mechanic mechanic = await _db
       .Mechanics
       .Include(m => m.VehicleMechanics)
       .ThenInclude(join => join.Vehicle)
       .FirstOrDefaultAsync(m => m.MechanicId == id);
-      return View(mechanic);
+      Dictionary<string, object> model = new() {
+            {"selectList", vehiclesSelectList},
+            {"joinEntity", new VehicleMechanic()},
+            {"mechanic", mechanic}
+        };
+      return View(model);
     }
 
     public async Task<IActionResult> Edit(int id)
@@ -80,5 +92,31 @@ namespace Factory.Controllers;
       _db.Mechanics.Remove(thisMechanic);
       await _db.SaveChangesAsync();
       return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AssignVehicle(VehicleMechanic vm)
+    {
+#nullable enable
+        VehicleMechanic? joinEntity = await _db.VehicleMechanics
+        .FirstOrDefaultAsync(join => join.VehicleId == vm.VehicleId && join.MechanicId == vm.MechanicId);
+#nullable disable
+        if (joinEntity == null && vm.VehicleId != 0)
+        {
+            _db.VehicleMechanics.Add(vm);
+            await _db.SaveChangesAsync();
+            return RedirectToAction("Details", new { id = vm.MechanicId });
+        }
+        return RedirectToAction("Details", new { id = vm.MechanicId });
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> UnassignVehicle(int id)
+    {
+        VehicleMechanic joinEntity = await _db.VehicleMechanics.FirstOrDefaultAsync(vm => vm.VehicleMechanicId == id);
+        int mechanicId = joinEntity.MechanicId;
+        _db.VehicleMechanics.Remove(joinEntity);
+        await _db.SaveChangesAsync();
+        return RedirectToAction("Details", new { id = mechanicId });
     }
   }

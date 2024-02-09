@@ -13,7 +13,7 @@
 }
 else
 {
-<form asp-controller="Vehicles" asp-action="AddMechanic" method="post">
+<form asp-controller="Vehicles" asp-action="AssignMechanic" method="post">
   <input asp-for=@vm.VehicleId value=@vehicleId type="hidden" />
   <select asp-for=@vm.MechanicId asp-items=@list></select>
   <button type="submit">Assign</button>

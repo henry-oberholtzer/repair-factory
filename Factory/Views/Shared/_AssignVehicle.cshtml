@@ -1,0 +1,21 @@
+@{
+  SelectList list = Model["selectList"];
+  VehicleMechanic vm = Model["joinEntity"];
+  int MechanicId = Model["mechanic"].MechanicId;
+}
+
+@if (list.Count() == 0)
+{
+  <select disabled>
+    <option>No Vehicles Available</option>
+  </select>
+  <button type="submit" disabled>Assign</button>
+}
+else
+{
+<form asp-controller="Mechanics" asp-action="AssignVehicle" method="post">
+  <input asp-for=@vm.MechanicId value=@MechanicId type="hidden" />
+  <select asp-for=@vm.VehicleId asp-items=@list></select>
+  <button type="submit">Assign</button>
+</form>
+}

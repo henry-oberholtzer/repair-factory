@@ -1,9 +1,17 @@
-@model Mechanic
+@{
+  Mechanic m = Model["mechanic"];
+  SelectList list = Model["selectList"];
+  int count = list.Count();
+}
 
-<h1>@Model.LastName, @Model.FirstName</h1>
-<h5>Added @Model.DateAdded.ToString("D")<h5/>
-<p>@Model.About</p>
-<a asp-controller="Mechanics" asp-action="Edit" asp-route-id=@Model.MechanicId><button>Edit</button></a>
-<form asp-controller="Mechanics" asp-action="Delete" asp-route-id=@Model.MechanicId method="post">
+<h1>@m.LastName, @m.FirstName</h1>
+<h5>Added @m.DateAdded.ToString("D")<h5/>
+<p>@m.About</p>
+<a asp-controller="Mechanics" asp-action="Edit" asp-route-id=@m.MechanicId><button>Edit</button></a>
+<form asp-controller="Mechanics" asp-action="Delete" asp-route-id=@m.MechanicId method="post">
   <button type="submit">Delete</button>
 </form>
+<hr />
+@await Html.PartialAsync("_AssignVehicle")
+<hr />
+@await Html.PartialAsync("_UnassignVehicle", m)

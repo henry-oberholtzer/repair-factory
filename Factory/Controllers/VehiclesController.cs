@@ -69,8 +69,10 @@ public class VehiclesController : Controller
     {
         List<Mechanic> unselected = await _db.Mechanics
         .Include(m => m.VehicleMechanics)
-        .Where(m => m.VehicleMechanics.Any(vm => vm.VehicleId != id) || !m.VehicleMechanics.Any()).ToListAsync();
+        .Where(m => m.VehicleMechanics.Any(vm => vm.VehicleId != id) || !m.VehicleMechanics.Any())
+        .ToListAsync();
         SelectList mechanicsSelectList = new(unselected, "MechanicId", "LastName");
+        
         Vehicle vehicle = await _db
         .Vehicles
         .Include(v => v.VehicleMechanics)
@@ -94,7 +96,7 @@ public class VehiclesController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddMechanic(VehicleMechanic vm)
+    public async Task<IActionResult> AssignMechanic(VehicleMechanic vm)
     {
 #nullable enable
         VehicleMechanic? joinEntity = await _db.VehicleMechanics
@@ -110,7 +112,7 @@ public class VehiclesController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> RemoveMechanic(int id)
+    public async Task<IActionResult> UnassignMechanic(int id)
     {
         VehicleMechanic joinEntity = await _db.VehicleMechanics.FirstOrDefaultAsync(vm => vm.VehicleMechanicId == id);
         int vehicleId = joinEntity.VehicleId;
