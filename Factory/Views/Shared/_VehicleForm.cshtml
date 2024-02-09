@@ -1,11 +1,10 @@
 @{
   Vehicle vehicle = Model["Vehicle"];
-  string action = "Create";
+  string action = Model["Action"];
   string buttonText = "Add";
   string dateAdded = DateTime.Now.ToString("dd-MM-yyyy");
   if (Model["Action"] == "Edit")
   {
-    action = "Edit";
     buttonText = "Save";
     dateAdded = vehicle.DateAdded.ToString("dd-MM-yyyy");
   }

@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc;
 using Factory.Models;
 using Microsoft.EntityFrameworkCore;
@@ -74,7 +73,6 @@ public class VehiclesController : Controller
         .FirstOrDefaultAsync(v => v.VehicleId == id);
         return View(thisVehicle);
     }
-
 
     [HttpPost]
     public async Task<IActionResult> Delete(int id)
