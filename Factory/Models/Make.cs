@@ -11,5 +11,4 @@ public class Make
   [Required]
   public string Name { get; set; }
 
-
 }
