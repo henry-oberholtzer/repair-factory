@@ -11,8 +11,5 @@ public class Make
   [Required]
   public string Name { get; set; }
 
-  public int MakeMechanic { get; set; }
-
-  public int MakeVehicle { get; set; }
 
 }
