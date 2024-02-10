@@ -59,8 +59,7 @@ By Henry Oberholtzer
 ## Known Bugs
 
 - Dates will get weird when editing a submission, I think a view model will be a solution
-- Can't display full names in the select lists for cars or mechanics yet, again I think a view model may solve this
-- Select for assigning in Mechanics isn't filtering down, unsure why this is differnet from the vehicle one.
+- Can't display full names in the select lists for mechanics yet.
 
 ## License
 
