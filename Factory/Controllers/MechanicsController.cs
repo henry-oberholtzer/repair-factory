@@ -49,7 +49,7 @@ namespace Factory.Controllers;
       .Include(v => v.VehicleMechanics)
       .Where(v => v.VehicleMechanics.Any(vm => vm.MechanicId != id) || v.VehicleMechanics.Any())
       .ToListAsync();
-      SelectList vehiclesSelectList = new(unselected, "VehicleId", "Model");
+      SelectList vehiclesSelectList = new(unselected, "VehicleId");
 
       Mechanic mechanic = await _db
       .Mechanics

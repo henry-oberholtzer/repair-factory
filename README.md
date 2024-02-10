@@ -14,7 +14,6 @@ By Henry Oberholtzer
 ## User Stories
 - Home
     * Splash page containing a list of all vehicles and all engineers
-    - (Optional) Preloaded data
 - Vehicles
     * Able to see a list of all vehicles that could need to be repaired.
     * Able to add, edit and delete vehicles
@@ -22,24 +21,20 @@ By Henry Oberholtzer
     * Unable to add a new vehicle if the form data is invalid
     * Able to add new vehicles if no engineers are available
     * Able to select a vehicle, see the details about the vehicle and all engineers assigned to repair the vehicle.
-    - (Optional) Add a selectable state for the condition the vehicle is in
-    - (Optional) Add a field for the estimated repair time of the vehicle
 - Mechanics
     * Able to see a list of all engineers available
     * Able to add, edit and delete engineers
     * A mechanic can be assigned to repair multiple vehicles
     * Unable to add an engineer if the form data is invalid
     * Able to select a mechanic, see their details and the vehicles they've been licensed for
-    - (Optional) Add a selectable state for whether the engineer is actively engaged in repairs
-- (Optional) Locations
-    - Add a table to see locations for vehicles
-
-## Features
-- Lots!
 
 ## Upcoming Changes
-- Add ViewModel
-- Add pagination
+- Adding 'Make" so mechanics can be assigned to a specific make of car they can work on, and then can only be assigned to a certain type of car, and so cars are sortable by their make
+- Styling
+- Add pagination to prevent overflows in the UI
+- Image field for vehicles
+- Schedules for mechanics
+- Estimates for vehicles
 
 ## Setup/Installation Requirements
 
