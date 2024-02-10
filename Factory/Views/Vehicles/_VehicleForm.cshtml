@@ -31,6 +31,11 @@
     <span asp-validation-for="@vehicle.Model"></span><br />
   </div>
   <div class="form-group">
+    <label asp-for="@vehicle.LicensePlate"></label><br />
+    <input asp-for="@vehicle.LicensePlate" type="text" placeholder="License Plate" /><br />
+    <span asp-validation-for="@vehicle.LicensePlate"></span><br />
+  </div>
+  <div class="form-group">
     <label asp-for="@vehicle.Condition"></label><br />
     <textarea asp-for="@vehicle.Condition" placeholder="Condition"></textarea><br />
     <span asp-validation-for="@vehicle.Condition"></span><br />

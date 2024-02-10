@@ -11,4 +11,6 @@ public class Make
   [Required]
   public string Name { get; set; }
 
+  public List<MakeMechanic> MakeMechanics { get; set; }
+
 }

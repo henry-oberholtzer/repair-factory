@@ -37,6 +37,7 @@ public class VehiclesController : Controller
     {
         if (ModelState.IsValid)
         {
+            vehicle.YearMakeModelPlate = $"{vehicle.ModelYear} {vehicle.Make} {vehicle.Model} | {vehicle.LicensePlate}";
             vehicle.DateAdded = DateTime.Now;
             _db.Vehicles.Add(vehicle);
             _db.SaveChanges();
@@ -58,6 +59,7 @@ public class VehiclesController : Controller
     {
         if (ModelState.IsValid)
         {
+            vehicle.YearMakeModelPlate = $"{vehicle.ModelYear} {vehicle.Make} {vehicle.Model} | {vehicle.LicensePlate}";
             _db.Vehicles.Update(vehicle);
             await _db.SaveChangesAsync();
             return RedirectToAction("Index");

@@ -21,4 +21,6 @@ public class Mechanic
     public DateTime DateAdded { get; set; }
 
     public List<VehicleMechanic> VehicleMechanics { get; set; }
+
+    public List<MakeMechanic> MakeMechanics { get; set; }
 }
