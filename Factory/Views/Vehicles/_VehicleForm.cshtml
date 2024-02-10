@@ -40,6 +40,7 @@
     <textarea asp-for="@vehicle.Condition" placeholder="Condition"></textarea><br />
     <span asp-validation-for="@vehicle.Condition"></span><br />
   </div>
+  <input asp-for="@vehicle.YearMakeModelPlate" value=@vehicle.YearMakeModelPlate type="hidden" />
   <input asp-for="@vehicle.DateAdded" type="hidden" value=@dateAdded />
   <button class="button" type="submit">@buttonText</button>
 </form>

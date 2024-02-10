@@ -47,7 +47,7 @@ namespace Factory.Controllers;
     {
       List<Vehicle> unselected = await _db.Vehicles
       .Include(v => v.VehicleMechanics)
-      .Where(v => v.VehicleMechanics.Any(vm => vm.MechanicId != id) || v.VehicleMechanics.Any())
+      .Where(v => !v.VehicleMechanics.Any(vm => vm.MechanicId == id))
       .ToListAsync();
       SelectList vehiclesSelectList = new(unselected, "VehicleId", "YearMakeModelPlate");
 

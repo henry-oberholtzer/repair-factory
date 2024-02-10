@@ -35,10 +35,10 @@ public class VehiclesController : Controller
     [HttpPost]
     public ActionResult Create(Vehicle vehicle)
     {
+        vehicle.YearMakeModelPlate = $"{vehicle.ModelYear} {vehicle.Make} {vehicle.Model} | {vehicle.LicensePlate}";
+        vehicle.DateAdded = DateTime.Now;
         if (ModelState.IsValid)
         {
-            vehicle.YearMakeModelPlate = $"{vehicle.ModelYear} {vehicle.Make} {vehicle.Model} | {vehicle.LicensePlate}";
-            vehicle.DateAdded = DateTime.Now;
             _db.Vehicles.Add(vehicle);
             _db.SaveChanges();
             return RedirectToAction("Index");
@@ -57,9 +57,9 @@ public class VehiclesController : Controller
     [HttpPost]
     public async Task<IActionResult> Edit(Vehicle vehicle)
     {
+        vehicle.YearMakeModelPlate = $"{vehicle.ModelYear} {vehicle.Make} {vehicle.Model} | {vehicle.LicensePlate}";
         if (ModelState.IsValid)
         {
-            vehicle.YearMakeModelPlate = $"{vehicle.ModelYear} {vehicle.Make} {vehicle.Model} | {vehicle.LicensePlate}";
             _db.Vehicles.Update(vehicle);
             await _db.SaveChangesAsync();
             return RedirectToAction("Index");
@@ -71,7 +71,7 @@ public class VehiclesController : Controller
     {
         List<Mechanic> unselected = await _db.Mechanics
         .Include(m => m.VehicleMechanics)
-        .Where(m => m.VehicleMechanics.Any(vm => vm.VehicleId != id) || !m.VehicleMechanics.Any())
+        .Where(m => !m.VehicleMechanics.Any(vm => vm.VehicleId == id))
         .ToListAsync();
         SelectList mechanicsSelectList = new(unselected, "MechanicId", "LastName");
         
