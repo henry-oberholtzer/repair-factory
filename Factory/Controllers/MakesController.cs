@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Factory.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Factory.Controllers;
 public class MakesController : Controller
@@ -11,9 +12,20 @@ public class MakesController : Controller
     _db = db;
   }
 
-  // public async Task<IActionResult> Index()
-  // {
-  //   List<Make> makes = await _db.Makes.Include(m => m.MakeModels)
-  // }
+  public async Task<IActionResult> Index()
+  {
+    List<Make> makes = await _db.Makes
+      .Include(m => m.MakeVehicles)
+      .Include(m => m.MakeMechanics)
+      .ToListAsync();
+    return View(makes);
+  }
+
+  [HttpPost]
+  public ActionResult Create()
+  {
+    
+    return View();
+  }
 
 }

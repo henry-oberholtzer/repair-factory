@@ -78,7 +78,7 @@ namespace Factory.Controllers;
       {
       _db.Mechanics.Update(mechanic);
       await _db.SaveChangesAsync();
-      return RedirectToAction("Index");
+      return RedirectToAction("Details", new { id = mechanic.MechanicId});
       }
       return View(MechanicFormModel(mechanic, "Edit"));
     }

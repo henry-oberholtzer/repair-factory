@@ -8,7 +8,7 @@
 {
   Vehicle v = vm.Vehicle;
   <li class="list-item">
-  <a asp-controller="Vehicles" asp-action="Details" asp-route-id=@v.VehicleId>@v.ModelYear @v.Make @v.Model</a>
+  <a asp-controller="Vehicles" asp-action="Details" asp-route-id=@v.VehicleId>@v.YearMakeModelPlate</a>
   <form asp-controller="Mechanics" asp-action="UnassignVehicle" method="post">
     <input type="hidden" name="id" value=@vm.VehicleMechanicId />
     <button type="submit">Unassign</button>

@@ -4,7 +4,7 @@
   int count = list.Count();
 }
 
-<h1>@v.ModelYear @v.Make @v.Model</h1>
+<h1>@v.YearMakeModelPlate</h1>
 <h5>Added @v.DateAdded.ToString("D")</h5>
 <p>@v.Condition</p>
 <a asp-controller="Vehicles" asp-action="Edit" asp-route-id=@v.VehicleId><button>Edit</button></a>

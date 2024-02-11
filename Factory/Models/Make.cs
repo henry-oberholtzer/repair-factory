@@ -13,4 +13,6 @@ public class Make
 
   public List<MakeMechanic> MakeMechanics { get; set; }
 
+  public List<MakeVehicle> MakeVehicles { get; set; }
+
 }

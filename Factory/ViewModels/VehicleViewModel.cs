@@ -1,7 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Factory.Models;
-public class Vehicle
+namespace Factory.ViewModels;
+
+public class VehicleViewModel
 {
     [Range(0, int.MaxValue)]
     public int VehicleId { get; set; }
@@ -10,6 +11,16 @@ public class Vehicle
     [Display(Name = "License Plate")]
     [Required]
     public string LicensePlate { get; set; }
+
+    [Range(0, int.MaxValue)]
+    [Required]
+    [Display(Name = "Make")]
+    public int MakeId { get; set; }
+
+    [StringLength(255, ErrorMessage = "The {0} cannot be longer than {1} characters")]
+    [Required(AllowEmptyStrings = true)]
+    [Display(Name = "If the make you're looking for is not listed, add a new one here")]
+    public string NewMake { get; set; }
 
     [StringLength(255, ErrorMessage = "The {0} cannot be longer than {1} characters")]
     [Required]
@@ -26,11 +37,4 @@ public class Vehicle
     [StringLength(255, ErrorMessage = "The {0} cannot be longer than {1} characters")]
     [Required]
     public string Condition { get; set; }
-    public string YearMakeModelPlate { get; set; }
-
-    public DateTime DateAdded { get; set; }
-
-    public List<MakeVehicle> MakeVehicles { get; set; }
-    public List<VehicleMechanic> VehicleMechanics { get; set; }
-
 }

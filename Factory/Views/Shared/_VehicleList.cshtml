@@ -10,7 +10,7 @@
 {
   <li class="list-item">
   <a asp-controller="Vehicles" asp-action="Details" asp-route-id=@vehicle.VehicleId>
-    @vehicle.ModelYear @vehicle.Make @vehicle.Model
+    @vehicle.YearMakeModelPlate
   </a>
   <p>
     Mechanics Assigned: @vehicle.VehicleMechanics.Count

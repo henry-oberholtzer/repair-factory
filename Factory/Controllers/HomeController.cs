@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Factory.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Factory.Controllers
-{
+namespace Factory.Controllers;
+
   public class HomeController : Controller
   {
 
@@ -27,4 +27,3 @@ namespace Factory.Controllers
     }
 
   }
-}

@@ -1,12 +1,11 @@
 @{
-  Vehicle vehicle = Model["Vehicle"];
+  VehicleViewModel vehicle = Model["Vehicle"];
   string action = Model["Action"];
+  SelectList makeSelectList = Model["makeSelectList"];
   string buttonText = "Add";
-  string dateAdded = DateTime.Now.ToString("dd-MM-yyyy");
   if (Model["Action"] == "Edit")
   {
     buttonText = "Save";
-    dateAdded = vehicle.DateAdded.ToString("dd-MM-yyyy");
   }
 }
 
@@ -21,14 +20,32 @@
     <span asp-validation-for="@vehicle.ModelYear"></span><br />
   </div>
   <div class="form-group">
-    <label asp-for="@vehicle.Make"></label><br />
-    <input asp-for="@vehicle.Make" type="text" placeholder="Make" /><br />
-    <span asp-validation-for="@vehicle.Make"></span><br />
+    <label asp-for="@vehicle.MakeId"></label><br />
+    <select asp-for="@vehicle.MakeId" type="text" asp-items=@makeSelectList >
+      @if(Model["Action"] == "Create") {
+        <option selected value=0>Select a Make</option>
+      }
+      else
+      {
+        <option value=0>Select a Make</option>
+      }
+    </select><br />
+    <span asp-validation-for="@vehicle.MakeId"></span><br />
+  </div>
+  <div class="form-group">
+    <label asp-for="@vehicle.NewMake"></label><br />
+    <input asp-for="@vehicle.NewMake" type="text" placeholder="New Make" /><br />
+    <span asp-validation-for="@vehicle.NewMake"></span><br />
   </div>
   <div class="form-group">
     <label asp-for="@vehicle.Model"></label><br />
     <input asp-for="@vehicle.Model" type="text" placeholder="Model" /><br />
     <span asp-validation-for="@vehicle.Model"></span><br />
+  </div>
+    <div class="form-group">
+    <label asp-for="@vehicle.Color"></label><br />
+    <input asp-for="@vehicle.Color" type="text" placeholder="Color" /><br />
+    <span asp-validation-for="@vehicle.Color"></span><br />
   </div>
   <div class="form-group">
     <label asp-for="@vehicle.LicensePlate"></label><br />
@@ -37,10 +54,8 @@
   </div>
   <div class="form-group">
     <label asp-for="@vehicle.Condition"></label><br />
-    <textarea asp-for="@vehicle.Condition" placeholder="Condition"></textarea><br />
+    <textarea asp-for="@vehicle.Condition" type="text" placeholder="Condition"></textarea><br />
     <span asp-validation-for="@vehicle.Condition"></span><br />
   </div>
-  <input asp-for="@vehicle.YearMakeModelPlate" value=@vehicle.YearMakeModelPlate type="hidden" />
-  <input asp-for="@vehicle.DateAdded" type="hidden" value=@dateAdded />
   <button class="button" type="submit">@buttonText</button>
 </form>
