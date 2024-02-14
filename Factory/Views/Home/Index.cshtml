@@ -1,6 +1,7 @@
 @{
   List<Vehicle> vehicles = Model["vehicles"];
   List<Mechanic> mechanics = Model["mechanics"];
+  List<Make> makes = Model["makes"];
 }
 
 <h1>Welcome!</h1>
@@ -11,4 +12,8 @@
 <div>
   <h2>Mechanics</h2>
   @await Html.PartialAsync("_MechanicList", mechanics)
+</div>
+<div>
+  <h2>Makes</h2>
+  @await Html.PartialAsync("../Makes/_MakeList", makes)
 </div>
