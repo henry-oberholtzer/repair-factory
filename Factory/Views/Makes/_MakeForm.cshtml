@@ -1,0 +1,22 @@
+@{
+  Make make = Model["Make"];
+  string action = Model["Action"];
+  string buttonText = "Add";
+  if (Model["Action"] == "Edit")
+  {
+    buttonText = "Save";
+  }
+}
+
+<form asp-controller="Makes" asp-action=@action method="post">
+  @if(action == "Edit")
+  {
+    <input asp-for="@make.MakeId" type="hidden" />
+  }
+  <div class="form-group">
+    <label asp-for="@make.Name"></label><br />
+    <input asp-for="@make.Name" type="text" placeholder="Make Name" /><br />
+    <span asp-validation-for="@make.Name"></span><br />
+  </div>
+  <button class="button" type="submit">@buttonText</button>
+</form>

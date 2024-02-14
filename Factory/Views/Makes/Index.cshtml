@@ -1,0 +1,34 @@
+@model List<Make>
+
+<h1>All Makes Serviced</h1>
+<ul class="list-group">
+  @if (Model.Count == 0)
+  {
+    <li class="list-item">No makes have been created</li>
+  }
+
+  @foreach (Make make in Model)
+  {
+    <li class="list-item">
+      <a asp-controller="Makes" asp-action="Details" asp-route-id=@make.MakeId>
+        @make.Name
+      </a> |
+      <a asp-controller="Makes" asp-action="Edit" asp-route-id=@make.MakeId>
+        Edit
+      </a>
+      @if(make.MakeMechanics.Count == 0 && make.MakeVehicles.Count == 0)
+      {
+        <form asp-controller="Makes" asp-action="Delete" method="post" asp-route-id=@make.MakeId>
+          <button type="submit">Delete</button>
+        </form>
+      }
+      <p>
+        Mechanics Licensed: @make.MakeMechanics.Count
+      </p>
+      <p>
+        Number in Shop: @make.MakeVehicles.Count
+      </p>
+
+    </li>
+  }
+</ul>
