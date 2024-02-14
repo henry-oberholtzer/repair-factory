@@ -1,5 +1,5 @@
 @{
-  VehicleViewModel vehicle = Model["Vehicle"];
+  VehicleViewModel vehicleViewModel = Model["VehicleViewModel"];
   string action = Model["Action"];
   SelectList makeSelectList = Model["makeSelectList"];
   string buttonText = "Add";
@@ -12,16 +12,16 @@
 <form asp-controller="Vehicles" asp-action=@action method="post" class="form">
   @if (action == "Edit")
   {
-    <input asp-for="@vehicle.VehicleId" type="hidden" />
+    <input asp-for="@vehicleViewModel.VehicleId" type="hidden" />
   }
   <div class="form-group">
-    <label asp-for="@vehicle.ModelYear"></label><br />
-    <input asp-for="@vehicle.ModelYear" type="number" placeholder="Model Year" /><br />
-    <span asp-validation-for="@vehicle.ModelYear"></span><br />
+    <label asp-for="@vehicleViewModel.ModelYear"></label><br />
+    <input asp-for="@vehicleViewModel.ModelYear" type="number" placeholder="Model Year" /><br />
+    <span asp-validation-for="@vehicleViewModel.ModelYear"></span><br />
   </div>
   <div class="form-group">
-    <label asp-for="@vehicle.MakeId"></label><br />
-    <select asp-for="@vehicle.MakeId" type="text" asp-items=@makeSelectList >
+    <label asp-for="@vehicleViewModel.MakeId"></label><br />
+    <select asp-for="@vehicleViewModel.MakeId" type="text" asp-items=@makeSelectList >
       @if(Model["Action"] == "Create") {
         <option selected value=0>Select a Make</option>
       }
@@ -30,32 +30,32 @@
         <option value=0>Select a Make</option>
       }
     </select><br />
-    <span asp-validation-for="@vehicle.MakeId"></span><br />
+    <span asp-validation-for="@vehicleViewModel.MakeId"></span><br />
   </div>
   <div class="form-group">
-    <label asp-for="@vehicle.NewMake"></label><br />
-    <input asp-for="@vehicle.NewMake" type="text" placeholder="New Make" /><br />
-    <span asp-validation-for="@vehicle.NewMake"></span><br />
+    <label asp-for="@vehicleViewModel.NewMake"></label><br />
+    <input asp-for="@vehicleViewModel.NewMake" type="text" placeholder="New Make" /><br />
+    <span asp-validation-for="@vehicleViewModel.NewMake"></span><br />
   </div>
   <div class="form-group">
-    <label asp-for="@vehicle.Model"></label><br />
-    <input asp-for="@vehicle.Model" type="text" placeholder="Model" /><br />
-    <span asp-validation-for="@vehicle.Model"></span><br />
+    <label asp-for="@vehicleViewModel.Model"></label><br />
+    <input asp-for="@vehicleViewModel.Model" type="text" placeholder="Model" /><br />
+    <span asp-validation-for="@vehicleViewModel.Model"></span><br />
   </div>
     <div class="form-group">
-    <label asp-for="@vehicle.Color"></label><br />
-    <input asp-for="@vehicle.Color" type="text" placeholder="Color" /><br />
-    <span asp-validation-for="@vehicle.Color"></span><br />
+    <label asp-for="@vehicleViewModel.Color"></label><br />
+    <input asp-for="@vehicleViewModel.Color" type="text" placeholder="Color" /><br />
+    <span asp-validation-for="@vehicleViewModel.Color"></span><br />
   </div>
   <div class="form-group">
-    <label asp-for="@vehicle.LicensePlate"></label><br />
-    <input asp-for="@vehicle.LicensePlate" type="text" placeholder="License Plate" /><br />
-    <span asp-validation-for="@vehicle.LicensePlate"></span><br />
+    <label asp-for="@vehicleViewModel.LicensePlate"></label><br />
+    <input asp-for="@vehicleViewModel.LicensePlate" type="text" placeholder="License Plate" /><br />
+    <span asp-validation-for="@vehicleViewModel.LicensePlate"></span><br />
   </div>
   <div class="form-group">
-    <label asp-for="@vehicle.Condition"></label><br />
-    <textarea asp-for="@vehicle.Condition" type="text" placeholder="Condition"></textarea><br />
-    <span asp-validation-for="@vehicle.Condition"></span><br />
+    <label asp-for="@vehicleViewModel.Condition"></label><br />
+    <input asp-for="@vehicleViewModel.Condition" type="text" placeholder="Condition"><br />
+    <span asp-validation-for="@vehicleViewModel.Condition"></span><br />
   </div>
   <button class="button" type="submit">@buttonText</button>
 </form>

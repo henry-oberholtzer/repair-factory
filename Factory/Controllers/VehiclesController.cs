@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Factory.Models;
 using Factory.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Factory.Controllers;
 
@@ -15,13 +16,53 @@ public class VehiclesController : Controller
         _db = db;
     }
 
-    public static Dictionary<string, object> FormModel(VehicleViewModel vehicle, SelectList makeSelectList, string action)
+    public Dictionary<string, object> FormModel(VehicleViewModel vehicleViewModel, SelectList makeSelectList, string action)
     {
         return new Dictionary<string, object> {
-            {"Vehicle", vehicle},
+            {"VehicleViewModel", vehicleViewModel},
             {"makeSelectList", makeSelectList},
             {"Action", action}
         };
+    }
+
+    public VehicleViewModel VehicleViewModelMap(Vehicle v)
+    {
+        return new VehicleViewModel
+        {
+            VehicleId = v.VehicleId,
+            LicensePlate = v.LicensePlate,
+            MakeId = v.MakeVehicles.First().MakeId,
+            Model = v.Model,
+            ModelYear = v.ModelYear,
+            Color = v.Color,
+            Condition = v.Condition
+        };
+    }
+
+    public Vehicle VehicleViewModelMap(VehicleViewModel vehicleViewModel, Make make)
+    {
+        return new Vehicle
+        {
+            VehicleId = vehicleViewModel.VehicleId,
+            LicensePlate = vehicleViewModel.LicensePlate,
+            Model = vehicleViewModel.Model,
+            ModelYear = vehicleViewModel.ModelYear,
+            Color = vehicleViewModel.Color,
+            Condition = vehicleViewModel.Condition,
+            YearMakeModelPlate = $"{vehicleViewModel.ModelYear} {make.Name} {vehicleViewModel.Model} | {vehicleViewModel.LicensePlate}",
+            DateAdded = DateTime.Now
+        };
+    }
+
+    public Vehicle VehicleViewModelMap(VehicleViewModel vehicleViewModel, Vehicle vehicle, Make make)
+    {
+        vehicle.LicensePlate = vehicleViewModel.LicensePlate;
+        vehicle.Model = vehicleViewModel.Model;
+        vehicle.ModelYear = vehicleViewModel.ModelYear;
+        vehicle.Color = vehicleViewModel.Color;
+        vehicle.Condition = vehicleViewModel.Condition;
+        vehicle.YearMakeModelPlate = $"{vehicleViewModel.ModelYear} {make.Name} {vehicleViewModel.Model} | {vehicleViewModel.LicensePlate}";
+        return vehicle;
     }
     public async Task<IActionResult> Index()
     {
@@ -36,6 +77,7 @@ public class VehiclesController : Controller
         return View(FormModel(new VehicleViewModel(), makeSelectList, "Create"));
     }
 
+
     [HttpPost]
     public async Task<IActionResult> Create(VehicleViewModel vehicleViewModel)
     {
@@ -43,7 +85,8 @@ public class VehiclesController : Controller
         {
             List<Make> makeList = await _db.Makes.OrderBy(m => m.Name).ToListAsync();
             SelectList makeSelectList = new(makeList, "MakeId", "Name");
-            return View(FormModel(vehicleViewModel, makeSelectList, "Create"));
+            Dictionary<string, object> model = FormModel(vehicleViewModel, makeSelectList, "Create");
+            return View(model);
         }
         Make makeReference = new();
         if (!string.IsNullOrEmpty(vehicleViewModel.NewMake))
@@ -70,17 +113,9 @@ public class VehiclesController : Controller
                 makeReference = existing;
             }
         }
+
         // create a new vehicle
-        Vehicle newVehicle = new()
-        {
-            LicensePlate = vehicleViewModel.LicensePlate,
-            Model = vehicleViewModel.Model,
-            ModelYear = vehicleViewModel.ModelYear,
-            Color = vehicleViewModel.Color,
-            Condition = vehicleViewModel.Condition,
-            YearMakeModelPlate = $"{vehicleViewModel.ModelYear} {makeReference.Name} {vehicleViewModel.Model} | {vehicleViewModel.LicensePlate}",
-            DateAdded = DateTime.Now
-        };
+        Vehicle newVehicle = VehicleViewModelMap(vehicleViewModel, makeReference);
         _db.Vehicles.Add(newVehicle);
         await _db.SaveChangesAsync();
         // add new MakeVehicle
@@ -110,90 +145,89 @@ public class VehiclesController : Controller
                 item.Selected = true;
             }
         }
-        VehicleViewModel editModel = new()
-        {
-            VehicleId = v.VehicleId,
-            LicensePlate = v.LicensePlate,
-            MakeId = v.MakeVehicles.First().MakeId,
-            Model = v.Model,
-            ModelYear = v.ModelYear,
-            Color = v.Color,
-            Condition = v.Condition
-        };
-        return View(FormModel(editModel, makeSelectList, "Edit"));
+        return View(FormModel(VehicleViewModelMap(v), makeSelectList, "Edit"));
     }
 
     [HttpPost]
     public async Task<IActionResult> Edit(VehicleViewModel vehicleViewModel)
     {
-        Vehicle vehicleToEdit = await _db
-        .Vehicles
+        if (!ModelState.IsValid)
+        {
+            List<Make> makeList = await _db.Makes.OrderBy(m => m.Name).ToListAsync();
+            SelectList makeSelectList = new(makeList, "MakeId", "Name");
+            foreach (SelectListItem item in makeSelectList)
+            {
+                if (item.Value == vehicleViewModel.MakeId.ToString())
+                {
+                    item.Selected = true;
+                }
+            }
+            return View(FormModel(vehicleViewModel, makeSelectList, "Edit"));
+        }
+        Vehicle vehicleToEdit = await _db.Vehicles
         .Include(v => v.MakeVehicles)
         .ThenInclude(mv => mv.Make)
         .FirstOrDefaultAsync(vehicle => vehicle.VehicleId == vehicleViewModel.VehicleId);
-        if (ModelState.IsValid)
-        {
-            Make makeReference = vehicleToEdit.MakeVehicles.First().Make;
-            if (!string.IsNullOrWhiteSpace(vehicleViewModel.NewMake) || vehicleViewModel.MakeId != vehicleToEdit.MakeVehicles.First().MakeId)
-            {
-                if (!string.IsNullOrWhiteSpace(vehicleViewModel.NewMake))
-                {
-#nullable enable // check and see if NewMake exists & does not match anything in the DB
-                    Make? existing = _db.Makes.Where(m => m.Name == vehicleViewModel.NewMake).First();
-#nullable disable
-                    if (existing == null)
-                    {
-                        // if it does not match, add a new Make, and get the makes Id
-                        Make newMake = new()
-                        {
-                            Name = vehicleViewModel.NewMake
-                        };
-                        _db.Makes.Add(newMake);
-                        await _db.SaveChangesAsync();
-                        vehicleViewModel.MakeId = newMake.MakeId;
-                        makeReference = newMake;
-                    }
-                    else
-                    {
-                        // if it does match something in the database, get the match Id
-                        vehicleViewModel.MakeId = existing.MakeId;
-                        makeReference = existing;
-                    }
-                    IQueryable<MakeVehicle> mvList = _db.MakeVehicles.Where(mv => mv.VehicleId == vehicleToEdit.VehicleId);
-                    foreach (MakeVehicle mV in mvList)
-                    {
-                        _db.MakeVehicles.Remove(mV);
-                    }
-                    MakeVehicle makeVehicle = new()
-                    {
-                        MakeId = vehicleViewModel.MakeId,
-                        VehicleId = vehicleToEdit.VehicleId
-                    };
-                    _db.MakeVehicles.Add(makeVehicle);
-                    await _db.SaveChangesAsync();
 
-                }
-            }
-            vehicleToEdit.LicensePlate = vehicleViewModel.LicensePlate;
-            vehicleToEdit.Model = vehicleViewModel.Model;
-            vehicleToEdit.ModelYear = vehicleViewModel.ModelYear;
-            vehicleToEdit.Color = vehicleViewModel.Color;
-            vehicleToEdit.Condition = vehicleViewModel.Condition;
-            vehicleToEdit.YearMakeModelPlate = $"{vehicleViewModel.ModelYear} {makeReference.Name} {vehicleViewModel.Model} | {vehicleViewModel.LicensePlate}";
-            _db.Vehicles.Update(vehicleToEdit);
-            await _db.SaveChangesAsync();
-            return RedirectToAction("Details", new { id = vehicleToEdit.VehicleId });
-        }
-        List<Make> makeList = await _db.Makes.OrderBy(m => m.Name).ToListAsync();
-        SelectList makeSelectList = new(makeList, "MakeId", "Name");
-        foreach (SelectListItem item in makeSelectList)
+        Make makeReference = vehicleToEdit.MakeVehicles.First().Make;
+
+
+        if (!string.IsNullOrEmpty(vehicleViewModel.NewMake))
         {
-            if (item.Value == vehicleViewModel.MakeId.ToString())
+#nullable enable // check and see if NewMake exists & does not match anything in the DB
+            Make? existing = await _db.Makes.FirstOrDefaultAsync(m => m.Name == vehicleViewModel.NewMake);
+#nullable disable
+            if (existing == null)
             {
-                item.Selected = true;
+                // if it does not match, add a new Make, and get the makes Id
+                Make newMake = new()
+                {
+                    Name = vehicleViewModel.NewMake
+                };
+                _db.Makes.Add(newMake);
+                await _db.SaveChangesAsync();
+                vehicleViewModel.MakeId = newMake.MakeId;
+                makeReference = newMake;
+            }
+            else
+            {
+                // if it does match something in the database, get the match Id
+                vehicleViewModel.MakeId = existing.MakeId;
+                makeReference = existing;
+            }
+
+        }
+        else if (vehicleViewModel.MakeId != vehicleToEdit.MakeVehicles.First().MakeId && vehicleViewModel.MakeId != 0)
+        {
+#nullable enable // check and see if NewMake exists & does not match anything in the DB
+            Make? existing = await _db.Makes.FirstOrDefaultAsync(m => m.MakeId == vehicleViewModel.MakeId);
+#nullable disable
+            if (existing != null)
+            {
+                makeReference = existing;
             }
         }
-        return View(FormModel(vehicleViewModel, makeSelectList, "Edit"));
+        if (vehicleViewModel.MakeId != 0)
+        {
+            IQueryable<MakeVehicle> mvList = _db.MakeVehicles.Where(mv => mv.VehicleId == vehicleToEdit.VehicleId);
+            foreach (MakeVehicle mV in mvList)
+            {
+                _db.MakeVehicles.Remove(mV);
+            }
+            await _db.SaveChangesAsync();
+            MakeVehicle makeVehicle = new()
+            {
+                MakeId = vehicleViewModel.MakeId,
+                VehicleId = vehicleToEdit.VehicleId
+            };
+            _db.MakeVehicles.Add(makeVehicle);
+            await _db.SaveChangesAsync();
+        }
+
+        _db.Vehicles.Update(VehicleViewModelMap(vehicleViewModel, vehicleToEdit, makeReference));
+        await _db.SaveChangesAsync();
+        return RedirectToAction("Details", new { id = vehicleToEdit.VehicleId });
+
     }
 
     public async Task<IActionResult> Details(int id)

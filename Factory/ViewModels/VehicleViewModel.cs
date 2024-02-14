@@ -9,7 +9,7 @@ public class VehicleViewModel
 
     [RegularExpression(@"^[A-Z\d]{1,7}", ErrorMessage = "Please double check the license plate")]
     [Display(Name = "License Plate")]
-    [Required]
+    [Required(ErrorMessage = "The License Plate is Required")]
     public string LicensePlate { get; set; }
 
     [Range(0, int.MaxValue)]
@@ -18,9 +18,11 @@ public class VehicleViewModel
     public int MakeId { get; set; }
 
     [StringLength(255, ErrorMessage = "The {0} cannot be longer than {1} characters")]
-    [Required(AllowEmptyStrings = true)]
     [Display(Name = "If the make you're looking for is not listed, add a new one here")]
-    public string NewMake { get; set; }
+#nullable enable
+    public string? NewMake { get; set; }
+
+#nullable disable
 
     [StringLength(255, ErrorMessage = "The {0} cannot be longer than {1} characters")]
     [Required]
