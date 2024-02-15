@@ -98,5 +98,17 @@ public class MakesController : Controller
     }
     return RedirectToAction("Index");
   }
+  public ActionResult Details(int id)
+  {
+    Make target = _db.Makes
+    .Include(m => m.MakeMechanics)
+    .ThenInclude(mm => mm.Mechanic)
+    .ThenInclude(m => m.VehicleMechanics)
+    .Include(m => m.MakeVehicles)
+    .ThenInclude(mv => mv.Vehicle)
+    .ThenInclude(v => v.VehicleMechanics)
+    .FirstOrDefault(m => m.MakeId == id);
+    return View(target);
+  }
 
 }

@@ -8,7 +8,7 @@ public class VehicleViewModel
     public int VehicleId { get; set; }
 
     [RegularExpression(@"^[A-Z\d]{1,7}", ErrorMessage = "Please double check the license plate")]
-    [Display(Name = "License Plate")]
+    [Display(Name = "License Plate, A-Z, 1-9, up to 7 characters")]
     [Required(ErrorMessage = "The License Plate is Required")]
     public string LicensePlate { get; set; }
 

@@ -1,0 +1,13 @@
+@model Make
+@{
+  List<Vehicle> vehicles = Model.MakeVehicles.Select(mv => mv.Vehicle).ToList();
+  List<Mechanic> mechanics = Model.MakeMechanics.Select(mv => mv.Mechanic).ToList();
+}
+
+<h1>@Model.Name</h1>
+<hr />
+<h1>Vehicles In Shop</h1>
+@await Html.PartialAsync("_VehicleList", vehicles)
+<hr />
+<h1>Licensed Mechanics</h1>
+@await Html.PartialAsync("_MechanicList", mechanics)

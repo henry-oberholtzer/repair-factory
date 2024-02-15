@@ -33,7 +33,7 @@ namespace Factory.Controllers;
     [HttpPost]
     public async Task<IActionResult> Create(Mechanic mechanic)
     {
-      if (ModelState.IsValid)
+      if (!ModelState.IsValid)
       {
         mechanic.DateAdded = DateTime.Now;
         _db.Mechanics.Add(mechanic);
