@@ -1,35 +1,51 @@
+@model MechanicFormViewModel
 @{
-  Mechanic mechanic = Model["Mechanic"];
-  string action = Model["Action"];
+  string action = "Create";
   string buttonText = "Add";
-  string dateAdded = DateTime.Now.ToString("dd-MM-yyyy");
-  if (Model["Action"] == "Edit")
+  if (Model.FormEdit)
   {
+    action = "Edit";
     buttonText = "Save";
-    dateAdded = mechanic.DateAdded.ToString("dd-MM-yyyy");
   }
 }
+@* @{
+Model Model = Model["Model"];
+string action = Model["Action"];
+string buttonText = "Add";
+string dateAdded = DateTime.Now.ToString("dd-MM-yyyy");
+if (Model["Action"] == "Edit")
+{
+buttonText = "Save";
+dateAdded = Model.DateAdded.ToString("dd-MM-yyyy");
+}
+} *@
 
 <form asp-controller="Mechanics" asp-action=@action method="post">
-  @if(action == "Edit")
+  @if (Model.FormEdit)
+
   {
-    <input asp-for="@mechanic.MechanicId" type="hidden" />
+    <input asp-for="@Model.MechanicId" type="hidden" />
   }
   <div class="form-group">
-    <label asp-for="@mechanic.FirstName"></label><br />
-    <input asp-for="@mechanic.FirstName" type="text" placeholder="First Name" /><br />
-    <span asp-validation-for="@mechanic.FirstName"></span><br />
+    <label asp-for="@Model.FirstName"></label><br />
+    <input asp-for="@Model.FirstName" type="text" placeholder="First Name" /><br />
+    <span asp-validation-for="@Model.FirstName"></span><br />
   </div>
-    <div class="form-group">
-    <label asp-for="@mechanic.LastName"></label><br />
-    <input asp-for="@mechanic.LastName" type="text" placeholder="Last Name" /><br />
-    <span asp-validation-for="@mechanic.LastName"></span><br />
+  <div class="form-group">
+    <label asp-for="@Model.LastName"></label><br />
+    <input asp-for="@Model.LastName" type="text" placeholder="Last Name" /><br />
+    <span asp-validation-for="@Model.LastName"></span><br />
+  </div>
+  </div>
+  <div class="form-group">
+    <label asp-for="@Model.SelectedMakes"></label><br />
+    <select asp-for="@Model.SelectedMakes" multiple asp-items="@Model.MakeSelectList"></select>
+    <span asp-validation-for="@Model.SelectedMakes"></span>
   </div>
   <div>
-  <label asp-for="@mechanic.About"></label><br />
-  <textarea asp-for="@mechanic.About" placeholder="About"></textarea><br />
-  <span asp-validation-for="@mechanic.About"></span><br />
+    <label asp-for="@Model.About"></label><br />
+    <textarea asp-for="@Model.About" placeholder="About"></textarea><br />
+    <span asp-validation-for="@Model.About"></span><br />
   </div>
-  <input asp-for="@mechanic.DateAdded" type="hidden" value=@dateAdded />
   <button class="button" type="submit">@buttonText</button>
 </form>
