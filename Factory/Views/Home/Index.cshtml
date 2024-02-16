@@ -5,6 +5,14 @@
 }
 
 <h1>Welcome!</h1>
+@if(makes.Count < 2 && mechanics.Count < 2 && makes.Count < 2)
+{
+<p>To begin, first @Html.ActionLink("add a vehicle", "Create", "Vehicles") to the shop.</p>
+<p>Afterwards, @Html.ActionLink("add a mechanic", "Create", "Mechanics"), who can be licensed to service the vehicle.</p>
+<p>You will then be able to assign this mechanic to vehicles they are approved to service, or do the same on vehicle pages.</p>
+<p>You may also @Html.ActionLink("add makes", "Create", "Makes") to the database in advance.</p>
+}
+</p>
 <div>
   <h2>Vehicles</h2>
   @await Html.PartialAsync("_VehicleList", vehicles)

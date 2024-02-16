@@ -12,6 +12,8 @@
   <button type="submit">Delete</button>
 </form>
 <hr />
+<h5>Assign licensed mechanics to this vehicle:</h5>
 @await Html.PartialAsync("_AssignMechanic")
 <hr />
+<h5>Mechanics currently assigned to this vehicle:</h5>
 @await Html.PartialAsync("_UnassignMechanic", v)

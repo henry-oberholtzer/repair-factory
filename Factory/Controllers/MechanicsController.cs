@@ -24,7 +24,8 @@ public class MechanicsController : Controller
   {
     List<Make> makeList = _db.Makes.OrderBy(m => m.Name).ToList();
     SelectList selectList = new(makeList, "MakeId", "Name");
-    foreach (SelectListItem i in selectList) {
+    foreach (SelectListItem i in selectList)
+    {
       if (selected.Contains(int.Parse(i.Value)))
       {
         i.Selected = true;
@@ -58,30 +59,39 @@ public class MechanicsController : Controller
     await _db.SaveChangesAsync();
     foreach (int i in model.SelectedMakes)
     {
-        MakeMechanic newMakeMechanic = new()
-        {
-          MakeId = i,
-          MechanicId = model.MechanicId
-        };
-        _db.MakeMechanics.Add(newMakeMechanic);
+      MakeMechanic newMakeMechanic = new()
+      {
+        MakeId = i,
+        MechanicId = newMechanic.MechanicId
+      };
+      _db.MakeMechanics.Add(newMakeMechanic);
     }
     _db.SaveChanges();
-    return RedirectToAction("Index");
+    return RedirectToAction("Details", new { id = newMechanic.MechanicId});
   }
 
   public async Task<IActionResult> Details(int id)
   {
-    List<Vehicle> unselected = await _db.Vehicles
-    .Include(v => v.VehicleMechanics)
-    .Where(v => !v.VehicleMechanics.Any(vm => vm.MechanicId == id))
-    .ToListAsync();
-    SelectList vehiclesSelectList = new(unselected, "VehicleId", "YearMakeModelPlate");
 
     Mechanic mechanic = await _db
     .Mechanics
     .Include(m => m.VehicleMechanics)
     .ThenInclude(join => join.Vehicle)
+    .Include(m => m.MakeMechanics)
+    .ThenInclude(mm => mm.Make)
     .FirstOrDefaultAsync(m => m.MechanicId == id);
+
+    List<int> approvedVehicles = mechanic.MakeMechanics.Select(mm => mm.MakeId).ToList();
+
+    List<Vehicle> unselected = await _db.Vehicles
+    .Include(v => v.VehicleMechanics)
+    .Include(v => v.MakeVehicles)
+    .Where(v => !v.VehicleMechanics.Any(vm => vm.MechanicId == id))
+    .Where(v => approvedVehicles.Any(i => i == v.MakeVehicles.First().MakeId))
+    .ToListAsync();
+    
+    SelectList vehiclesSelectList = new(unselected, "VehicleId", "YearMakeModelPlate");
+
     Dictionary<string, object> model = new() {
             {"selectList", vehiclesSelectList},
             {"joinEntity", new VehicleMechanic()},
@@ -118,12 +128,12 @@ public class MechanicsController : Controller
     _db.SaveChanges();
     foreach (int i in model.SelectedMakes)
     {
-        MakeMechanic newMakeMechanic = new()
-        {
-          MakeId = i,
-          MechanicId = model.MechanicId
-        };
-        _db.MakeMechanics.Add(newMakeMechanic);
+      MakeMechanic newMakeMechanic = new()
+      {
+        MakeId = i,
+        MechanicId = model.MechanicId
+      };
+      _db.MakeMechanics.Add(newMakeMechanic);
     }
     _db.Mechanics.Update(model.ToMechanic(thisMechanic));
     await _db.SaveChangesAsync();

@@ -2,16 +2,26 @@
   Mechanic m = Model["mechanic"];
   SelectList list = Model["selectList"];
   int count = list.Count();
+  List<Make> makeList = m.MakeMechanics.Select(mm => mm.Make).ToList();
 }
 
 <h1>@m.LastName, @m.FirstName</h1>
 <h5>Added @m.DateAdded.ToString("D")<h5/>
 <p>@m.About</p>
+<h5>Licensed to work on:</h5>
+<ul>
+@foreach(Make make in makeList)
+{
+  <li>@Html.ActionLink(make.Name, "Details", "Makes", new { id = make.MakeId})</li>
+}
+</ul>
 <a asp-controller="Mechanics" asp-action="Edit" asp-route-id=@m.MechanicId><button>Edit</button></a>
 <form asp-controller="Mechanics" asp-action="Delete" asp-route-id=@m.MechanicId method="post">
   <button type="submit">Delete</button>
 </form>
 <hr />
+<h5>Assign vehicles @m.LastName is licensed to work on:</h5>
 @await Html.PartialAsync("_AssignVehicle")
 <hr />
+<h5>Vehicles @m.LastName is currently assigned:</h5>
 @await Html.PartialAsync("_UnassignVehicle", m)

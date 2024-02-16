@@ -232,17 +232,22 @@ public class VehiclesController : Controller
 
     public async Task<IActionResult> Details(int id)
     {
-        List<Mechanic> unselected = await _db.Mechanics
-        .Include(m => m.VehicleMechanics)
-        .Where(m => !m.VehicleMechanics.Any(vm => vm.VehicleId == id))
-        .ToListAsync();
-        SelectList mechanicsSelectList = new(unselected, "MechanicId", "LastName");
-
         Vehicle vehicle = await _db
         .Vehicles
         .Include(v => v.VehicleMechanics)
         .ThenInclude(join => join.Mechanic)
+        .Include(v => v.MakeVehicles)
         .FirstOrDefaultAsync(v => v.VehicleId == id);
+
+        List<Mechanic> unselected = await _db.Mechanics
+        .Include(m => m.VehicleMechanics)
+        .Include(m => m.MakeMechanics)
+        .Where(m => !m.VehicleMechanics.Any(vm => vm.VehicleId == id))
+        .Where(m => m.MakeMechanics.Any(i => i.MakeId == vehicle.MakeVehicles.First().MakeId))
+        .ToListAsync();
+        SelectList mechanicsSelectList = new(unselected, "MechanicId", "LastName");
+
+
         Dictionary<string, object> model = new() {
             {"selectList", mechanicsSelectList},
             {"joinEntity", new VehicleMechanic()},
