@@ -1,0 +1,20 @@
+@if (ViewBag.Breadcrumbs != null)
+{
+  <nav aria-label="breadcrumb">
+    <ol>
+      @foreach (Breadcrumb b in ViewBag.Breadcrumbs as List<Breadcrumb>)
+      {
+        if(b.Active)
+        {
+          <li class="breadcrumb-active">
+            <a asp-action="@b.Action" asp-controller="@b.Controller">@b.Text</a>
+          </li>
+        }
+        else
+        {
+          <li class="breadcrumb-inactive" aria-current="page">@b.Text</li>
+        }
+      }
+    </ol>
+  </nav>
+}

@@ -14,6 +14,7 @@
 <body>
   @await Html.PartialAsync("_Header")
   <div id="main-container">
+    @await Html.PartialAsync("_Breadcrumbs")
     @RenderBody()
   </div>
 

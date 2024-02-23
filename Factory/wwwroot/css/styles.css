@@ -49,6 +49,14 @@ body {
   padding-top: 0;
 }
 
+#nav-left {
+  list-style: none;
+  display: flex;
+  justify-content: left;
+  padding: .25rem;
+  padding-top: 0;
+}
+
 .btn-nav {
   border-bottom: 2px solid #252525;
   font-weight: bold;

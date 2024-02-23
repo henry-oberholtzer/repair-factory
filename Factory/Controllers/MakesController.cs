@@ -3,6 +3,8 @@ using Factory.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Factory.Controllers;
+
+[BreadcrumbActionFilter]
 public class MakesController : Controller
 {
   private readonly FactoryContext _db;

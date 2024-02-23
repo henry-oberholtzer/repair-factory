@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Factory.Controllers;
 
+[BreadcrumbActionFilter]
 public class VehiclesController : Controller
 {
     private readonly FactoryContext _db;

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Factory.Controllers;
 
+[BreadcrumbActionFilter]
 public class MechanicsController : Controller
 {
   private readonly FactoryContext _db;
