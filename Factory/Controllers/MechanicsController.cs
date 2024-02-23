@@ -37,7 +37,7 @@ public class MechanicsController : Controller
 
   public async Task<IActionResult> Index()
   {
-    List<Mechanic> mechanics = await _db.Mechanics.Include(m => m.VehicleMechanics).ToListAsync();
+    List<Mechanic> mechanics = await _db.Mechanics.Include(m => m.VehicleMechanics).Include(m => m.MakeMechanics).ToListAsync();
     return View(mechanics);
   }
 

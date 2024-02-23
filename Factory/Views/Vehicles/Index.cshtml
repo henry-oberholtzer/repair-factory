@@ -1,3 +1,8 @@
-<h1>All Vehicles</h1>
+<h1>Vehicles</h1>
+    <nav id="nav" class="nav-left">
+      <a asp-controller="Vehicles" asp-action="Create">
+        <li class="btn-nav">Add New</li>
+      </a>
+    </nav>
 <hr />
 @await Html.PartialAsync("_VehicleList")

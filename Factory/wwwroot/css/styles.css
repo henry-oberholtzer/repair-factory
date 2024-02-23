@@ -1,0 +1,144 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+a {
+  text-decoration: none;
+}
+
+h1, h2, h3 {
+  font-family: "Kode Mono", monospace;
+}
+
+body {
+  /* border: 1px solid red; */
+  width: 100vw;
+  height: 100vh;
+}
+
+/* header */
+#header {
+  background-color: #fadc0a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#header h1 {
+  background-color: #fadc0a;
+  margin: .5rem;
+  color: #252525;
+  border: 2px solid #252525;
+  padding: .25rem;
+}
+
+#header h1:focus, #header h1:active, #header h1:hover {
+  background-color: #252525;
+  color: #fadc0a;
+}
+
+/* dropdown */
+#nav {
+  list-style: none;
+  display: flex;
+  justify-content: space-around;
+  padding: .25rem;
+  padding-top: 0;
+}
+
+.btn-nav {
+  border-bottom: 2px solid #252525;
+  font-weight: bold;
+  color: #252525;
+  margin: .125rem .5rem;
+}
+
+#main-container {
+  margin-top: 1rem;
+  padding: 0 1rem;
+}
+
+/* form */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #93938c;
+  padding: 1rem;
+}
+
+.form button {
+  padding: .25rem;
+  background-color: #fadc0a;
+  font-weight: bold;
+  border: #252525 solid 2px;
+  cursor: pointer;
+}
+
+input, select, option, textarea {
+  padding: .25rem;
+  width: 100%;
+  font-size: 10pt;
+  max-width: 375px;
+  margin: .25rem 0;
+  cursor: pointer;
+  border: 1px solid #93938c;
+}
+
+textarea {
+  resize: none;
+}
+
+select {
+  background-color: #c9c8c466;
+}
+
+option {
+  border-radius: 0;
+}
+
+.form label {
+  font-size: 10pt;
+}
+
+@media (min-width: 576px) {
+  #header {
+    flex-direction: row;
+  }
+}
+
+/* tables */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  text-align: left;
+  padding: 0.5rem;
+  background-color: #fadc0a;
+}
+
+td {
+  padding: 0.5rem;
+  height: 100%;
+}
+
+tr:nth-child(even) {
+  background-color: #c9c8c466;
+}
+
+tbody tr:hover {
+  background-color: #93938c;
+}
+
+.expanded {
+  position: absolute;
+  margin-top: -.5rem;
+  margin-left: -.5rem;
+  height: 2rem;
+  width: calc(100% - 2rem);           
+}
