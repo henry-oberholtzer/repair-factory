@@ -23,11 +23,11 @@ public class MechanicFormViewModel
   [Required]
   public string About { get; set; }
 
-  
   public SelectList MakeSelectList { get; set; }
 
   [Display(Name = "Makes Licensed to Service")]
-  public List<int> SelectedMakes { get; set; }
+  public List<int> SelectedMakes { get; set; } = new();
+
   public bool FormEdit { get; set; } = false;
 
   public MechanicFormViewModel()

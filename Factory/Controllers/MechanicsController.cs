@@ -57,16 +57,19 @@ public class MechanicsController : Controller
     Mechanic newMechanic = model.ToMechanic();
     _db.Mechanics.Add(newMechanic);
     await _db.SaveChangesAsync();
-    foreach (int i in model.SelectedMakes)
+    if(model.SelectedMakes.Count > 0)
     {
-      MakeMechanic newMakeMechanic = new()
+      foreach (int i in model.SelectedMakes)
       {
-        MakeId = i,
-        MechanicId = newMechanic.MechanicId
-      };
-      _db.MakeMechanics.Add(newMakeMechanic);
+        MakeMechanic newMakeMechanic = new()
+        {
+          MakeId = i,
+          MechanicId = newMechanic.MechanicId
+        };
+        _db.MakeMechanics.Add(newMakeMechanic);
+      }
+      await _db.SaveChangesAsync();
     }
-    _db.SaveChanges();
     return RedirectToAction("Details", new { id = newMechanic.MechanicId});
   }
 

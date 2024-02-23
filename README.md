@@ -1,6 +1,6 @@
 # RepairFactory
 
-A web application for tracking mechanics and the vehicles they're able to repair, built with C# and Razor Pages, using EFCore & MVC structure and a MySQL database.
+A web application for tracking mechanics and the vehicles they're able to repair, built with C# and Razor Pages, using EfCore & MVC structure and a MySQL database.
 
 By Henry Oberholtzer
 
@@ -8,7 +8,7 @@ By Henry Oberholtzer
 
 - C#
 - MySQL
-- EFCore
+- EfCore
 - Razor Pages
 
 ## User Stories
@@ -38,7 +38,7 @@ By Henry Oberholtzer
 
 ## Setup/Installation Requirements
 
-- .NET 6 or greater is required for set up, and dotnet-ef to manage migrations.
+- .NET 6 or greater is required for set up, and [dotnet-ef](https://www.nuget.org/packages/dotnet-ef/) to manage migrations.
 - To establish locally, [download the repository](https://github.com/henry-oberholtzer/Factory/archive/refs/heads/main.zip) to your computer.
 - Open the folder with your terminal and run `dotnet restore` to gather necessary resources.
 - In the production direction, `/Factory` run `$ touch appsettings.json`
@@ -54,7 +54,7 @@ By Henry Oberholtzer
 - A local instance of MySQL (8.0.0 or greater) is required to be set up and running to use the project, for information on installing and configuring MySQL, [please see the official documentation.](https://dev.mysql.com/doc/mysql-installation-excerpt/8.3/en/)
 - If you do not have `dotnet-ef` installed, first install it by running `dotnet tool install --global dotnet-ef --version 6.0.0`
 - Run `dotnet ef database update` to create the database based on the provided database migrations.
-- To start the projet, in the production directory, run the command `dotnet run` on your terminal.
+- To start the project, in the production directory, run the command `dotnet run` on your terminal.
 
 ## Known Bugs
 
@@ -63,6 +63,6 @@ By Henry Oberholtzer
 
 ## License
 
-(c) 2024 [Henry Oberholtzer](https://www.henryoberholtzer.com/)
+© 2024 [Henry Oberholtzer](https://www.henryoberholtzer.com/)
 
 Original code licensed under the [GNU GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html#license), other code bases and libraries as stated.

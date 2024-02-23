@@ -8,17 +8,6 @@
     buttonText = "Save";
   }
 }
-@* @{
-Model Model = Model["Model"];
-string action = Model["Action"];
-string buttonText = "Add";
-string dateAdded = DateTime.Now.ToString("dd-MM-yyyy");
-if (Model["Action"] == "Edit")
-{
-buttonText = "Save";
-dateAdded = Model.DateAdded.ToString("dd-MM-yyyy");
-}
-} *@
 
 <form asp-controller="Mechanics" asp-action=@action method="post">
   @if (Model.FormEdit)
@@ -37,11 +26,14 @@ dateAdded = Model.DateAdded.ToString("dd-MM-yyyy");
     <span asp-validation-for="@Model.LastName"></span><br />
   </div>
   </div>
-  <div class="form-group">
-    <label asp-for="@Model.SelectedMakes"></label><br />
-    <select asp-for="@Model.SelectedMakes" multiple asp-items="@Model.MakeSelectList"></select>
-    <span asp-validation-for="@Model.SelectedMakes"></span>
-  </div>
+  @if(@Model.MakeSelectList.Any())
+  {
+    <div class="form-group">
+      <label asp-for="@Model.SelectedMakes"></label><br />
+      <select asp-for="@Model.SelectedMakes" multiple asp-items="@Model.MakeSelectList"></select>
+      <span asp-validation-for="@Model.SelectedMakes"></span>
+    </div>
+  }
   <div>
     <label asp-for="@Model.About"></label><br />
     <textarea asp-for="@Model.About" placeholder="About"></textarea><br />
