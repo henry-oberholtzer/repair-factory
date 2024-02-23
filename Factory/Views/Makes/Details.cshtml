@@ -5,9 +5,13 @@
 }
 
 <h1>@Model.Name</h1>
+<nav id="nav" class="nav-left">
+  <a asp-controller="Makes" asp-action="Edit" asp-route-id="@Model.MakeId">
+    <li class="btn-nav">Edit</li>
+  </a>
+</nav>
 <hr />
-<h1>Vehicles In Shop</h1>
+<h3>Vehicles In Shop</h3>
 @await Html.PartialAsync("_VehicleList", vehicles)
-<hr />
-<h1>Licensed Mechanics</h1>
+<h3>Licensed Mechanics</h3>
 @await Html.PartialAsync("_MechanicList", mechanics)

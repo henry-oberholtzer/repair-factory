@@ -1,20 +1,29 @@
 @model List<Vehicle>
+<table class="table">
+<thead>
+    <th scope="col">Name</th>
+    <th scope="col">Mechanics</th>
+</thead>
+  <tbody>
 
-<ul class="list-group">
-@if (Model.Count == 0)
-{
-  <li class="list-item">No vehicles have been added</li>
-}
 
-@foreach (Vehicle vehicle in Model)
-{
-  <li class="list-item">
-  <a asp-controller="Vehicles" asp-action="Details" asp-route-id=@vehicle.VehicleId>
-    @vehicle.YearMakeModelPlate
-  </a>
-  <p>
-    Mechanics Assigned: @vehicle.VehicleMechanics.Count
-  </p>
-  </li>
-}
-</ul>
+    @foreach (Vehicle v in Model)
+    {
+      <tr class="table-row">
+        <td>
+          <a class="expanded" asp-controller="Vehicles" asp-action="Details" asp-route-id=@v.VehicleId>
+          </a>
+            @v.YearMakeModelPlate
+
+        </td>
+        <td>@v.VehicleMechanics.Count</td>
+      </tr>
+    }
+  </tbody>
+  <tfoot>
+  @if (Model.Count == 0)
+    {
+      <tr class="table-row" ><th colspan="3">No vehicles have been added.</th></tr>
+    }
+  </tfoot>
+</table>

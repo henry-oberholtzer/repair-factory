@@ -114,12 +114,18 @@ option {
 .table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: auto;
 }
 
 th {
   text-align: left;
   padding: 0.5rem;
   background-color: #fadc0a;
+}
+
+tfoot th {
+  background-color: transparent;
+  font-weight: 500;
 }
 
 td {

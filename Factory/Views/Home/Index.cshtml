@@ -13,15 +13,3 @@
 <p>You may also @Html.ActionLink("add makes", "Create", "Makes") to the database in advance.</p>
 }
 </p>
-<div>
-  <h2>Vehicles</h2>
-  @await Html.PartialAsync("_VehicleList", vehicles)
-</div>
-<div>
-  <h2>Mechanics</h2>
-  @await Html.PartialAsync("_MechanicList", mechanics)
-</div>
-<div>
-  <h2>Makes</h2>
-  @await Html.PartialAsync("../Makes/_MakeList", makes)
-</div>

@@ -8,7 +8,7 @@
   }
 }
 
-<form asp-controller="Makes" asp-action=@action method="post">
+<form class="form" asp-controller="Makes" asp-action=@action method="post">
   @if(action == "Edit")
   {
     <input asp-for="@make.MakeId" type="hidden" />

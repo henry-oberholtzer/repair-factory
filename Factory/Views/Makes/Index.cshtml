@@ -1,4 +1,10 @@
 @model List<Make>
 
-<h1>All Makes Serviced</h1>
+<h1>All Makes</h1>
+<nav id="nav" class="nav-left">
+  <a asp-controller="Mechanics" asp-action="Create">
+    <li class="btn-nav">Add New</li>
+  </a>
+</nav>
+<hr />
 @await Html.PartialAsync("_MakeList")

@@ -9,7 +9,7 @@
   }
 }
 
-<form asp-controller="Mechanics" asp-action=@action method="post">
+<form class="form" asp-controller="Mechanics" asp-action=@action method="post">
   @if (Model.FormEdit)
 
   {
@@ -24,7 +24,6 @@
     <label asp-for="@Model.LastName"></label><br />
     <input asp-for="@Model.LastName" type="text" placeholder="Last Name" /><br />
     <span asp-validation-for="@Model.LastName"></span><br />
-  </div>
   </div>
   @if(@Model.MakeSelectList.Any())
   {

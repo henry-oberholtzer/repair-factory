@@ -1,37 +1,29 @@
-<ul class="list-group">
+@model List<Make>
+
+<table class="table">
+<thead>
+    <th scope="col">Name</th>
+    <th scope="col">Mechanics</th>
+    <th scope="col">In Shop</th>
+</thead>
+  <tbody>
+    @foreach (Make m in Model)
+    {
+      <tr class="table-row">
+        <td>
+          <a class="expanded" asp-controller="Makes" asp-action="Details" asp-route-id=@m.MakeId>
+          </a>
+            @m.Name
+        </td>
+        <td>@m.MakeMechanics.Count</td>
+        <td>@m.MakeVehicles.Count</td>
+      </tr>
+    }
+  </tbody>
+    <tfoot>
   @if (Model.Count == 0)
-  {
-    <li class="list-item">No makes have been created</li>
-  }
-
-  @foreach (Make make in Model)
-  {
-    <li class="list-item">
-      <a asp-controller="Makes" asp-action="Details" asp-route-id=@make.MakeId>
-        @make.Name
-      </a> |
-      <a asp-controller="Makes" asp-action="Edit" asp-route-id=@make.MakeId>
-        Edit
-      </a>
-      @if(make.MakeMechanics.Count == 0 && make.MakeVehicles.Count == 0)
-      {
-        <form asp-controller="Makes" asp-action="Delete" method="post" asp-route-id=@make.MakeId>
-          <button type="submit">Delete</button>
-        </form>
-      }
-      else
-      {
-        <div>
-        <button disabled>Delete</button>
-        </div>
-      }
-      <p>
-        Mechanics Licensed: @make.MakeMechanics.Count
-      </p>
-      <p>
-        Number in Shop: @make.MakeVehicles.Count
-      </p>
-
-    </li>
-  }
-</ul>
+    {
+      <tr class="table-row" ><th colspan="3">No makes have been added.</th></tr>
+    }
+  </tfoot>
+</table>
