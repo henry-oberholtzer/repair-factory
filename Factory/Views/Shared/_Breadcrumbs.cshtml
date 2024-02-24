@@ -1,6 +1,6 @@
 @if (ViewBag.Breadcrumbs != null)
 {
-  <nav aria-label="breadcrumb">
+  <nav aria-label="breadcrumb" class="breadcrumbs">
     <ol>
       @foreach (Breadcrumb b in ViewBag.Breadcrumbs as List<Breadcrumb>)
       {
@@ -12,7 +12,7 @@
         }
         else
         {
-          <li class="breadcrumb-inactive" aria-current="page">@b.Text</li>
+          <li class="breadcrumb-inactive" aria-current="page"><p>@b.Text</p></li>
         }
       }
     </ol>

@@ -3,7 +3,6 @@ using Factory.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Factory.Controllers;
-
   public class HomeController : Controller
   {
 

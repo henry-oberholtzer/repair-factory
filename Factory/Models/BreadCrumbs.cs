@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
@@ -35,15 +36,18 @@ public class BreadcrumbActionFilter : ActionFilterAttribute
     if (context.HttpContext.Request.Path.HasValue)
     {
       string[] pathSplit = context.HttpContext.Request.Path.Value.Split("/");
+      TextInfo info = CultureInfo.CurrentCulture.TextInfo;
+
       for (int i = 0; i < pathSplit.Length; i++)
       {
-        if (string.IsNullOrEmpty(pathSplit[i]) || string.Compare(pathSplit[i], homeControllerName, true) == 0)
+        string pathName = info.ToTitleCase(pathSplit[i]);
+
+        if (string.IsNullOrEmpty(pathName) || string.Compare(pathName, homeControllerName, true) == 0)
         {
           continue;
         }
 
-        Type controller = GetControllerType(pathSplit[i] + "Controller");
-
+        Type controller = GetControllerType(pathName + "Controller");
         if (controller != null)
         {
           var indexMethod = controller.GetMethod("Index");
@@ -52,13 +56,13 @@ public class BreadcrumbActionFilter : ActionFilterAttribute
           {
             breadcrumbList.Add(new Breadcrumb
             {
-              Text = CamelCaseSpacing(pathSplit[i]),
+              Text = CamelCaseSpacing(pathName),
               Action = "Index",
               Controller = pathSplit[i],
               Active = true
             });
 
-            if (i + 1 < pathSplit.Length && string.Compare(pathSplit[i + 1], "Index", true) == 0)
+            if (i + 1 < pathSplit.Length && string.Compare(info.ToTitleCase(pathSplit[i + 1]), "Index", true) == 0)
             {
               breadcrumbList.LastOrDefault().Active = false;
 
@@ -69,19 +73,21 @@ public class BreadcrumbActionFilter : ActionFilterAttribute
 
         if (i - 1 > 0)
         {
-          var prevController = GetControllerType(pathSplit[i - 1] + "Controller");
+          var prevController = GetControllerType(info.ToTitleCase(pathSplit[i - 1]) + "Controller");
           if (prevController != null)
           {
-            MethodInfo method = prevController.GetMethod(pathSplit[i]);
-
+            MethodInfo method = prevController.GetMethod(pathName, new Type [] { typeof(int)});
+            if(method == null)
+            {
+              method = prevController.GetMethod(pathName, Array.Empty<Type>());
+            }
             if (method != null)
             {
               breadcrumbList.Add(new Breadcrumb
               {
-                Text = CamelCaseSpacing(pathSplit[i]),
+                Text = CamelCaseSpacing(pathName),
                 Action = pathSplit[i],
-                Controller = pathSplit[i - 1],
-                Active = true
+                Controller = pathSplit[i - 1]
               });
             }
           }
@@ -97,7 +103,7 @@ public class BreadcrumbActionFilter : ActionFilterAttribute
     Type controller = null;
     try
     {
-      controller = Assembly.GetCallingAssembly().GetType("WebApp.Web.Controllers." + name);
+      controller = Assembly.GetCallingAssembly().GetType("Factory.Controllers." + name);
     }
     catch
     { }
